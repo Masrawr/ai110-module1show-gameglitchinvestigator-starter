@@ -63,7 +63,7 @@ Document at least 3 bugs you found. Add rows as needed.
 
 - How would you explain Streamlit "reruns" and session state to a friend who has never used Streamlit?
 
-  
+Streamlit re-runs your whole script top-to-bottom on every click, so regular variables forget everything — st.session_state is the one drawer that stays locked between reruns so your app can actually remember things.Reruns are like the page refreshing every single time you touch anything, and session state is the sticky note you leave on the monitor so you don't lose your place when it refreshes.
 
 ---
 
@@ -71,5 +71,13 @@ Document at least 3 bugs you found. Add rows as needed.
 
 - What is one habit or strategy from this project that you want to reuse in future labs or projects?
   - This could be a testing habit, a prompting strategy, or a way you used Git.
+
+  I have learned from this project to be very specific in terms of what to ask the AI and providing it with all the necessary context.
+
 - What is one thing you would do differently next time you work with AI on a coding task?
+
+  Rather than asking it to just do a task, I will explain all the context and requirements and utilize and step by step approach.
+
 - In one or two sentences, describe how this project changed the way you think about AI generated code.
+
+  AI is there for guide us through each step rather than do everything for us. AI is supposed to be like the Chariot and we should be the Charioteer, like the example from Plato. AI cannot be both.

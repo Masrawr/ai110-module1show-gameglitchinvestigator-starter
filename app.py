@@ -103,6 +103,7 @@ with col2:
 with col3:
     show_hint = st.checkbox("Show hint", value=True)
 
+#Reset logic was moved to logic_utils.py:new_game and updates status of the game.
 if new_game_clicked:
     new_game(st.session_state, low, high)
     st.success("New game started.")
@@ -117,7 +118,7 @@ if st.session_state.status != "playing":
 
 if submit:
     st.session_state.attempts += 1
-
+#parse_guess is imported from logic_utils.py and it checks for out of range inputs
     ok, guess_int, err = parse_guess(raw_guess)
 
     if not ok:
