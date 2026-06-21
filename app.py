@@ -1,6 +1,14 @@
 import random
 import streamlit as st
 
+from logic_utils import parse_guess, new_game, check_guess
+
+OUTCOME_MESSAGES = {
+    "Win": "🎉 Correct!",
+    "Too High": "📈 Go HIGHER!",
+    "Too Low": "📉 Go LOWER!",
+}
+
 def get_range_for_difficulty(difficulty: str):
     if difficulty == "Easy":
         return 1, 20
@@ -10,43 +18,7 @@ def get_range_for_difficulty(difficulty: str):
         return 1, 50
     return 1, 100
 
-
-def parse_guess(raw: str):
-    if raw is None:
-        return False, None, "Enter a guess."
-
-    if raw == "":
-        return False, None, "Enter a guess."
-
-    try:
-        if "." in raw:
-            value = int(float(raw))
-        else:
-            value = int(raw)
-    except Exception:
-        return False, None, "That is not a number."
-
-    return True, value, None
-
-
-def check_guess(guess, secret):
-    if guess == secret:
-        return "Win", "🎉 Correct!"
-
-    try:
-        if guess > secret:
-            return "Too High", "📈 Go HIGHER!"
-        else:
-            return "Too Low", "📉 Go LOWER!"
-    except TypeError:
-        g = str(guess)
-        if g == secret:
-            return "Win", "🎉 Correct!"
-        if g > secret:
-            return "Too High", "📈 Go HIGHER!"
-        return "Too Low", "📉 Go LOWER!"
-
-
+#Bug 4: Score calculation is incorrect
 def update_score(current_score: int, outcome: str, attempt_number: int):
     if outcome == "Win":
         points = 100 - 10 * (attempt_number + 1)
@@ -125,15 +97,14 @@ raw_guess = st.text_input(
 
 col1, col2, col3 = st.columns(3)
 with col1:
-    submit = st.button("Submit Guess 🚀")
+    submit = st.button("Submit Guess 🚀") #Bug 2: Submit button not working 
 with col2:
-    new_game = st.button("New Game 🔁")
+    new_game_clicked = st.button("New Game 🔁")
 with col3:
     show_hint = st.checkbox("Show hint", value=True)
 
-if new_game:
-    st.session_state.attempts = 0
-    st.session_state.secret = random.randint(1, 100)
+if new_game_clicked:
+    new_game(st.session_state, low, high)
     st.success("New game started.")
     st.rerun()
 
@@ -160,7 +131,8 @@ if submit:
         else:
             secret = st.session_state.secret
 
-        outcome, message = check_guess(guess_int, secret)
+        outcome = check_guess(guess_int, secret)
+        message = OUTCOME_MESSAGES[outcome]
 
         if show_hint:
             st.warning(message)
